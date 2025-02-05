@@ -53,6 +53,16 @@ describe("DimaTokenTest", async function() {
         expect(successWithdrawTx).to.changeEtherBalance(owner, priceForMint);
     })
 
+    it("should return token uri", async function() {
+        const { owner, user2, contract } = await loadFixture(deploy)
+
+        const tokenUri = "https://ipfs.io/ipfs/bafkreievgibi55znfubyt7u4zeh45bq3vkh3jy3bsnkpj7edamos4jrepi"
+
+        const getUriTx = await contract.tokenURI(0)
+
+        expect(getUriTx).to.eq(tokenUri)
+    })
+
     it("should change mint price", async function() {
         const {owner, user2, contract} = await loadFixture(deploy);
 
