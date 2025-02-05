@@ -1,0 +1,8 @@
+{
+  "base-sepolia": {
+    "DimaToken": {
+      "address": "0x10a6A6FF29Be2afd46E6a25c6Dd7668363407544",
+      "startBlock": 7645403
+    }
+  }
+}
