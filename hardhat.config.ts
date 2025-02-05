@@ -2,6 +2,7 @@ import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import { vars } from "hardhat/config";
 
+const ETHERSCAN_API_KEY = vars.get("ETHERSCAN_API_KEY");
 
 const config: HardhatUserConfig = {
   solidity: "0.8.28",
@@ -13,7 +14,7 @@ const config: HardhatUserConfig = {
     },
   },
   etherscan: {
-    apiKey: 'U1ZDTMW7YTF1SKRYPD1X6PF45MF49P6ZEN',
+    apiKey: ETHERSCAN_API_KEY,
   },
 };
 
