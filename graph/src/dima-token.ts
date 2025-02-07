@@ -4,7 +4,8 @@ import {
   BatchMetadataUpdate as BatchMetadataUpdateEvent,
   MetadataUpdate as MetadataUpdateEvent,
   OwnershipTransferred as OwnershipTransferredEvent,
-  Transfer as TransferEvent
+  Transfer as TransferEvent,
+  CustomTransfer as CustomTransferEvent
 } from "../generated/DimaToken/DimaToken"
 import {
   Approval,
@@ -12,7 +13,8 @@ import {
   BatchMetadataUpdate,
   MetadataUpdate,
   OwnershipTransferred,
-  Transfer
+  Transfer,
+  CustomTransfer
 } from "../generated/schema"
 
 export function handleApproval(event: ApprovalEvent): void {
@@ -103,4 +105,22 @@ export function handleTransfer(event: TransferEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+}
+
+export function handleCustomTransfer(event: CustomTransferEvent
+): void {
+  // Create a unique ID for the CustomTransfer entity
+  let id = event.transaction.hash.concatI32(event.logIndex.toI32());
+
+  // Create a new CustomTransfer entity
+  let customTransfer = new CustomTransfer(id);
+
+  // Populate the entity fields with event data
+  customTransfer.owner = event.params.owner;
+  customTransfer.price = event.params.price;
+  customTransfer.timestamp = event.block.timestamp;
+  customTransfer.tokenUri = event.params.tokenUri;
+
+  // Save the entity to the store
+  customTransfer.save();
 }

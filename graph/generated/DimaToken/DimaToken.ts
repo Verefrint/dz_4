@@ -84,6 +84,40 @@ export class BatchMetadataUpdate__Params {
   }
 }
 
+export class CustomTransfer extends ethereum.Event {
+  get params(): CustomTransfer__Params {
+    return new CustomTransfer__Params(this);
+  }
+}
+
+export class CustomTransfer__Params {
+  _event: CustomTransfer;
+
+  constructor(event: CustomTransfer) {
+    this._event = event;
+  }
+
+  get id(): Bytes {
+    return this._event.parameters[0].value.toBytes();
+  }
+
+  get owner(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get price(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+
+  get timestamp(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+
+  get tokenUri(): string {
+    return this._event.parameters[4].value.toString();
+  }
+}
+
 export class MetadataUpdate extends ethereum.Event {
   get params(): MetadataUpdate__Params {
     return new MetadataUpdate__Params(this);

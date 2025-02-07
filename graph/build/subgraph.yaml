@@ -2,7 +2,7 @@ specVersion: 1.0.0
 indexerHints:
   prune: auto
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum
     name: DimaToken
@@ -25,7 +25,7 @@ dataSources:
         - Transfer
       abis:
         - name: DimaToken
-          file: ./abis/DimaToken.json
+          file: DimaToken\DimaToken.json
       eventHandlers:
         - event: Approval(indexed address,indexed address,indexed uint256)
           handler: handleApproval
@@ -41,4 +41,4 @@ dataSources:
           handler: handleOwnershipTransferred
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
-      file: ./src/dima-token.ts
+      file: DimaToken\DimaToken.wasm
