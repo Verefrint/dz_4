@@ -9,7 +9,9 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 error SmallSumForMint (uint requiredPrice);
 error UnsuccesedWitdraw();
 
-contract DimaToken is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {//https://etherscan.io/address/0x10a6A6FF29Be2afd46E6a25c6Dd7668363407544
+contract DimaToken is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {//https://etherscan.io/address/0x194CEC4a9d9ccadf1eC93Af069D8267a97f3778A
+
+    event CustomTransfer(bytes8 indexed id, address owner, uint price, uint timestamp, string tokenUri);
 
     uint private priceForMint  = 100_000_000_000_000;
     string constant tokenUri = "https://ipfs.io/ipfs/bafkreievgibi55znfubyt7u4zeh45bq3vkh3jy3bsnkpj7edamos4jrepi";
@@ -17,6 +19,46 @@ contract DimaToken is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {//https
     constructor(address initialOwner) ERC721("Dima", "DMA") Ownable(initialOwner) {
         ERC721._safeMint(initialOwner, 0);//я как владелец хочу обладать этим токеном после его создания
         ERC721URIStorage._setTokenURI(1, tokenUri);
+
+        emit CustomTransfer(
+            bytes8(keccak256(abi.encodePacked(block.timestamp))), 
+            initialOwner,                    
+            0,                    
+            block.timestamp,                 
+            tokenUri                        
+        );
+    }
+
+    function transferFrom(address from, address to, uint256 tokenId) public override(IERC721, ERC721) {
+        if (to == address(0)) {
+            revert ERC721InvalidReceiver(address(0));
+        }
+
+        emit CustomTransfer(
+            bytes8(keccak256(abi.encodePacked(from))), 
+            to,                    
+            0,                    
+            block.timestamp,                 
+            tokenUri                        
+        );
+        
+        address previousOwner = ERC721._update(to, tokenId, _msgSender());
+        if (previousOwner != from) {
+            revert ERC721IncorrectOwner(from, tokenId, previousOwner);
+        }
+    }
+
+    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data) public override(IERC721, ERC721) {
+        emit CustomTransfer(
+            bytes8(keccak256(abi.encodePacked(from))), 
+            to,                    
+            0,                    
+            block.timestamp,                 
+            tokenUri                        
+        );
+
+        transferFrom(from, to, tokenId);
+        ERC721Utils.checkOnERC721Received(_msgSender(), from, to, tokenId, data);
     }
 
     function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory) {
@@ -31,8 +73,18 @@ contract DimaToken is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {//https
         priceForMint = _price;
     }
 
+
+
     function mint(uint tokenId) external payable {
         require(msg.value >= priceForMint, SmallSumForMint(priceForMint));
+
+        emit CustomTransfer(
+            bytes8(keccak256(abi.encodePacked(msg.sender))), 
+            address(msg.sender),                    
+            priceForMint,                    
+            block.timestamp,                 
+            tokenUri                        
+        );
 
         ERC721._safeMint(msg.sender, tokenId);
         ERC721URIStorage._setTokenURI(tokenId, tokenUri);
@@ -46,3 +98,4 @@ contract DimaToken is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {//https
         }
     }
 }
+
