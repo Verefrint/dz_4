@@ -55,9 +55,7 @@ type OwnershipTransferred @entity(immutable: true) {
 }
 
 type CustomTransfer @entity(immutable: true) {
-  id: Bytes!
   owner: Bytes! #address
   price: BigInt! #uint256
-  timestamp: BigInt!
   tokenUri: String!
 }

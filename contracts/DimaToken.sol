@@ -11,7 +11,7 @@ error UnsuccesedWitdraw();
 
 contract DimaToken is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {//https://etherscan.io/address/0x194CEC4a9d9ccadf1eC93Af069D8267a97f3778A
 
-    event CustomTransfer(bytes8 indexed id, address owner, uint price, uint timestamp, string tokenUri);
+    event CustomTransfer(address owner, uint price, string tokenUri);
 
     uint private priceForMint  = 100_000_000_000_000;
     string constant tokenUri = "https://ipfs.io/ipfs/bafkreievgibi55znfubyt7u4zeh45bq3vkh3jy3bsnkpj7edamos4jrepi";
@@ -21,10 +21,8 @@ contract DimaToken is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {//https
         ERC721URIStorage._setTokenURI(1, tokenUri);
 
         emit CustomTransfer(
-            bytes8(keccak256(abi.encodePacked(block.timestamp))), 
             initialOwner,                    
-            0,                    
-            block.timestamp,                 
+            0,                                     
             tokenUri                        
         );
     }
@@ -35,10 +33,8 @@ contract DimaToken is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {//https
         }
 
         emit CustomTransfer(
-            bytes8(keccak256(abi.encodePacked(from))), 
             to,                    
-            0,                    
-            block.timestamp,                 
+            0,                              
             tokenUri                        
         );
         
@@ -50,10 +46,8 @@ contract DimaToken is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {//https
 
     function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data) public override(IERC721, ERC721) {
         emit CustomTransfer(
-            bytes8(keccak256(abi.encodePacked(from))), 
             to,                    
-            0,                    
-            block.timestamp,                 
+            0,                                   
             tokenUri                        
         );
 
@@ -79,10 +73,8 @@ contract DimaToken is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {//https
         require(msg.value >= priceForMint, SmallSumForMint(priceForMint));
 
         emit CustomTransfer(
-            bytes8(keccak256(abi.encodePacked(msg.sender))), 
             address(msg.sender),                    
-            priceForMint,                    
-            block.timestamp,                 
+            priceForMint,                        
             tokenUri                        
         );
 

@@ -97,20 +97,12 @@ export class CustomTransfer__Params {
     this._event = event;
   }
 
-  get id(): Bytes {
-    return this._event.parameters[0].value.toBytes();
-  }
-
   get owner(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 
   get price(): BigInt {
     return this._event.parameters[2].value.toBigInt();
-  }
-
-  get timestamp(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
   }
 
   get tokenUri(): string {

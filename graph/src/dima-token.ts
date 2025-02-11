@@ -118,7 +118,6 @@ export function handleCustomTransfer(event: CustomTransferEvent
   // Populate the entity fields with event data
   customTransfer.owner = event.params.owner;
   customTransfer.price = event.params.price;
-  customTransfer.timestamp = event.block.timestamp;
   customTransfer.tokenUri = event.params.tokenUri;
 
   // Save the entity to the store

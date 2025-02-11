@@ -33,7 +33,7 @@ dataSources:
           handler: handleApprovalForAll
         - event: BatchMetadataUpdate(uint256,uint256)
           handler: handleBatchMetadataUpdate
-        - event: CustomTransfer(indexed bytes8,address,uint256,uint256,string)
+        - event: CustomTransfer(address,uint256,string)
           handler: handleCustomTransfer
         - event: MetadataUpdate(uint256)
           handler: handleMetadataUpdate
